@@ -21,6 +21,7 @@
               prepend-inner-icon="mdi-account-circle-outline"
               v-model="payload.email"
               :rules="emailRules"
+              hide-details="auto"
               solo
               flat
             />
@@ -30,7 +31,7 @@
             <v-text-field
               class="custom-text-field"
               prepend-inner-icon="mdi-key-outline"
-              hide-details
+              hide-details="auto"
               type="password"
               :rules="passwordRules"
               v-model="payload.password"
@@ -40,7 +41,7 @@
           </fieldset>
 
           <button
-            :disabled="loading"
+            :disabled="loading || !validForm"
             @click.prevent="login()"
             class="primary white--text font-weight-bold w-100 pa-3 br-100 mb-5"
           >
@@ -75,7 +76,10 @@ export default {
   }),
   computed: {
     passwordRules() {
-      return [(v) => (!!v && v?.trim() != "") || "Senha é obrigatória"];
+      return [
+        (v) => (!!v && v?.trim() != "") || "Senha é obrigatória",
+        (v) => v.length >= 8 || "Senha precisa ter 8 ou mais caracteres",
+      ];
     },
     emailRules() {
       return [
