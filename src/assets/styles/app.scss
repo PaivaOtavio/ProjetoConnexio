@@ -1,0 +1,72 @@
+@import '~roboto-fontface/css/roboto/roboto-fontface.css';
+@import '~@mdi/font/css/materialdesignicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '~izitoast/dist/css/iziToast.min.css';
+
+
+.vh-100 {
+    height: 100vh;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.br-100 {
+    border-radius: 100px;
+}
+
+.text-transform-none {
+    text-transform: none !important;
+}
+
+.max-width-container {
+    max-width: 1200px;
+}
+
+.p-24px {
+    padding: 24px;
+}
+
+
+.avatar-container {
+    width: 188px;
+    height: 188px;
+    border: 4px solid #167ffc;
+    border-radius: 188px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .item {
+        width: 160px;
+        height: 160px;
+        background-size: cover;
+        border-radius: 160px;
+        background-repeat: no-repeat;
+    }
+}
+
+.areas-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+        border: 1px solid #167ffc;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.04),
+            0px 4px 8px rgba(0, 0, 0, 0.06);
+        border-radius: 30px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        padding: 5px 10px;
+        color: #167ffc;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+.bordered {
+    border: 1px solid #e4e4e4;
+}
