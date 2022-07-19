@@ -1,23 +1,20 @@
-<<<<<<< HEAD
-# connexio
-=======
-# connexio
+<h2 align="center"> Descrição </h2>
 
-## Project setup
-```
-npm install
-```
+Este é o front-end da Connexio
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+<br/>
+    <h3 align='center'>Acesse o projeto no heroku para testar: <a href='https://connexio.herokuapp.com/'><strong>Connexio</strong></a></h3>
+<br/>
+Senha: 
+email: admin@connexio.com
+senha: Abc@1234
 
-### Compiles and minifies for production
-```
-npm run build
+> Instale as dependências
+```bash
+npm install 
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
->>>>>>> master
+Rode o projeto
+```bash
+npm run server
+```
