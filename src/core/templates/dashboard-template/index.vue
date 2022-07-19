@@ -23,14 +23,14 @@
               <v-list-item :two-line="!isMobile">
                 <v-list-item-content v-if="!isMobile">
                   <v-list-item-title class="text-right">
-                    {{ user.title }}
+                    {{ user.name }}
                   </v-list-item-title>
                   <v-list-item-subtitle class="text-right">
-                    {{ user.subtitle }}
+                    {{ user.email }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-avatar>
-                  <img :src="user.avatar" />
+                  <img :src="user.photo" />
                 </v-list-item-avatar>
               </v-list-item>
             </div>
@@ -46,11 +46,11 @@
       <template v-slot:prepend>
         <v-list-item three-line>
           <v-list-item-avatar>
-            <img :src="user.avatar" alt="avatar" />
+            <img :src="user.photo" alt="avatar" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{ user.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ user.subtitle }}</v-list-item-subtitle>
+            <v-list-item-title>{{ user.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -80,14 +80,14 @@
 <script>
 export default {
   name: "DashboardTemplate",
-  data: (vm) => ({
+  data: () => ({
     drawer: false,
-    user: {
-      title: "Jane Smith",
-      subtitle: "Aluno",
-      avatar: "https://randomuser.me/api/portraits/women/81.jpg",
-    },
-    items: [
+    user: JSON.parse(localStorage.getItem("user_data")),
+    items: [],
+  }),
+
+  mounted() {
+    this.items = [
       {
         title: "Buscar por professor",
         icon: "mdi-account-group-outline",
@@ -96,17 +96,19 @@ export default {
       {
         icon: "mdi-account-circle-outline",
         title: "Meu perfil",
-        to: { name: "profile" },
+        to: undefined,
       },
       {
         icon: "mdi-logout",
         title: "Sair",
         onClick: () => {
-          vm.$auth.logout();
+          this.$auth.logout();
+          localStorage.clear();
         },
       },
-    ],
-  }),
+    ];
+  },
+
   watch: {
     isMobile(value) {
       if (!value) {

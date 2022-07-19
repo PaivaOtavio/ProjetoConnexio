@@ -97,10 +97,19 @@ export default {
           .login({
             data: { email, password },
             staySignedIn: true,
-            fetchUser: true,
+            fetchUser: false,
           })
-          .then(({ data }) => {
-            this.$router.push({ name: "dashboard" });
+          .then(() => {
+            this.$auth
+              .fetch()
+              .then(({ data }) => {
+                localStorage.setItem("user_data", JSON.stringify(data));
+                this.$router.push({ name: "dashboard" });
+              })
+              .catch(() => {
+                localStorage.clear();
+                this.$toast.error("Falha ao obter dados do usuário");
+              });
           })
           .catch(() => {
             this.$toast.error(

@@ -29,7 +29,7 @@ export default new VueRouter({
           component: () => import("@/features/dashboard"),
         },
         {
-          path: "/profile",
+          path: "/profile/:id",
           name: "profile",
           meta: {
             auth: true,

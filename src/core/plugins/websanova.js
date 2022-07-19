@@ -16,13 +16,13 @@ export default {
       url: "login",
       method: "POST",
       redirect: "/",
-      fetchUser: true,
+      fetchUser: false,
       staySignedIn: true,
     },
     fetchData: {
       url: "me",
       method: "POST",
-      enabled: true,
+      enabled: false,
     },
     refreshData: {
       url: "refresh",

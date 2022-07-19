@@ -7,11 +7,11 @@
             <div
               class="item"
               :style="{
-                backgroundImage: `url(https://randomuser.me/api/portraits/women/81.jpg)`,
+                backgroundImage: `url(${profile.url_photo})`,
               }"
             ></div>
           </div>
-          <h2 class="title">Larissa Lima</h2>
+          <h2 class="title">{{ profile.name }}</h2>
 
           <div class="social-items">
             <img src="@/assets/icons/linkedin.svg" alt="linkedin" />
@@ -72,6 +72,19 @@ export default {
   name: "Profile",
   components: {
     BoxContainer,
+  },
+  data: () => ({
+    profile: {},
+  }),
+  mounted() {
+    this.fetchProfile();
+  },
+  methods: {
+    fetchProfile() {
+      this.$http.get(`/teachers/${this.$route.params.id}`).then(({ data }) => {
+        this.profile = data;
+      });
+    },
   },
 };
 </script>

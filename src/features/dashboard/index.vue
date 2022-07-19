@@ -7,6 +7,7 @@
           prepend-inner-icon="mdi-magnify"
           placeholder="Digite o nome do professor"
           hide-details
+          v-model="search"
           solo
           flat
         />
@@ -15,6 +16,10 @@
         <v-autocomplete
           class="search-filter"
           append-icon="mdi-chevron-down"
+          v-model="searchArea"
+          :items="items"
+          item-text="name"
+          item-value="id"
           solo
           placeholder="Área de pesquisa"
           hide-details
@@ -23,88 +28,110 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" class="white mx-md-3 mb-5 rounded pa-10">
-        <v-row>
-          <div class="avatar-container offset-3 mx-auto offset-md-0">
-            <div
-              class="item"
-              :style="{
-                backgroundImage: `url(https://randomuser.me/api/portraits/women/81.jpg)`,
-              }"
-            ></div>
-          </div>
-          <v-col cols="12" md="" class="details-container">
-            <h2 class="text-center text-md-left">Mara Alencar</h2>
-            <p class="mb-5">
-              Apparently we had reached a great height in the atmosphere, for
-              the sky was a dead black, and the stars had ceased to twinkle.
-            </p>
-
-            <div class="areas-container">
-              <div class="item">Realidade Virtual</div>
-              <div class="item">Internet das Coisas</div>
-            </div>
-          </v-col>
-          <v-col md="3">
-            <v-btn class="br-100 mb-5" block x-large color="primary" depressed
-              >Entrar em contato</v-btn
-            >
-            <v-btn
-              class="br-100"
-              block
-              x-large
-              color="primary"
-              depressed
-              outlined
-              >Ver perfil</v-btn
-            >
-          </v-col>
-        </v-row>
+      <v-col class="text-center" v-if="!paginator.data.length && !searching">
+        <h1>Sem itens para exibir</h1>
       </v-col>
-      <v-col cols="12" class="white mx-md-3 mb-5 rounded pa-10">
-        <v-row>
-          <div class="avatar-container offset-3 mx-auto offset-md-0">
-            <div
-              class="item"
-              :style="{
-                backgroundImage: `url(https://randomuser.me/api/portraits/women/81.jpg)`,
-              }"
-            ></div>
-          </div>
-          <v-col cols="12" md="" class="details-container">
-            <h2 class="text-center text-md-left">Mara Alencar</h2>
-            <p class="mb-5">
-              Apparently we had reached a great height in the atmosphere, for
-              the sky was a dead black, and the stars had ceased to twinkle.
-            </p>
-
-            <div class="areas-container">
-              <div class="item">Realidade Virtual</div>
-              <div class="item">Internet das Coisas</div>
+      <template v-else>
+        <v-col
+          cols="12"
+          v-for="item in paginator.data"
+          :key="item.id"
+          class="white mx-md-3 mb-5 rounded pa-10"
+        >
+          <v-row>
+            <div class="avatar-container offset-3 mx-auto offset-md-0">
+              <div
+                class="item"
+                :style="{
+                  backgroundImage: `url(${item.url_photo})`,
+                }"
+              ></div>
             </div>
-          </v-col>
-          <v-col md="3">
-            <v-btn class="br-100 mb-5" block x-large color="primary" depressed
-              >Entrar em contato</v-btn
-            >
-            <v-btn
-              class="br-100"
-              block
-              x-large
-              color="primary"
-              depressed
-              outlined
-              >Ver perfil</v-btn
-            >
-          </v-col>
-        </v-row>
-      </v-col>
+            <v-col cols="12" md="" class="details-container">
+              <h2 class="text-center text-md-left">{{ item.name }}</h2>
+              <p class="mb-5" v-html="item.about"></p>
+
+              <div class="areas-container">
+                <div
+                  class="item"
+                  v-for="(area, j) in item.areas"
+                  :key="area + j"
+                >
+                  {{ area }}
+                </div>
+              </div>
+            </v-col>
+            <v-col md="3">
+              <v-btn class="br-100 mb-5" block x-large color="primary" depressed
+                >Entrar em contato</v-btn
+              >
+              <v-btn
+                class="br-100"
+                block
+                x-large
+                :to="{ name: 'profile', params: { id: item.id } }"
+                color="primary"
+                depressed
+                outlined
+                >Ver perfil</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-col></template
+      >
     </v-row>
   </v-container>
 </template>
 <script>
 export default {
   name: "Dashboard",
+  data: () => ({
+    searching: false,
+    items: [],
+    paginator: {
+      current_page: 1,
+      last_page: 1,
+      per_page: 1,
+      total: 11,
+      data: [],
+    },
+    search: "",
+    searchArea: "",
+  }),
+  watch: {
+    search() {
+      this.fetchItems();
+    },
+    searchArea() {
+      this.fetchItems();
+    },
+  },
+  mounted() {
+    this.fetchAreas();
+  },
+  methods: {
+    fetchAreas() {
+      this.$http.get("/search-areas").then(({ data }) => {
+        this.items = data;
+        this.fetchItems();
+      });
+    },
+    fetchItems() {
+      const { searchArea, search } = this;
+      this.searching = true;
+
+      this.$http
+        .get("/teachers/search", {
+          params: { search, search_areas: searchArea },
+        })
+        .then(({ data }) => {
+          this.paginator = data;
+        })
+        .finally(() => {
+          this.searching = false;
+        });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
