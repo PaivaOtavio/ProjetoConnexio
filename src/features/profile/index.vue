@@ -14,9 +14,15 @@
           <h2 class="title">{{ profile.name }}</h2>
 
           <div class="social-items">
-            <img src="@/assets/icons/linkedin.svg" alt="linkedin" />
-            <img src="@/assets/icons/twitter.svg" alt="twitter" />
-            <img src="@/assets/icons/github.svg" alt="github" />
+            <a :href="this.profile.social_media_1" target="_self">
+              <img src="@/assets/icons/github.svg" alt="github" />
+            </a>
+            <a :href="this.profile.social_media_2" target="_self">
+              <img src="@/assets/icons/linkedin.svg" alt="linkedin" />
+            </a>
+            <a :href="this.profile.social_media_3" target="_self">
+              <img src="@/assets/icons/twitter.svg" alt="twitter" />
+            </a>
           </div>
           <div class="w-100 pa-5">
             <v-btn
@@ -34,32 +40,25 @@
       <v-col>
         <BoxContainer class="mb-5" title="Sobre mim">
           <p>
-            Apparently we had reached a great height in the atmosphere, for the
-            sky was a dead black, and the stars had ceased to twinkle. By the
-            same illusion which lifts the horizon of the sea to the level of the
-            spectator on a hillside, the sable cloud beneath was dished out, and
-            the car seemed to float in the middle of an immense dark sphere,
-            whose upper half was strewn with silver. Looking down into the dark
-            gulf below, I could see a ruddy light streaming through a rift in
-            the clouds.
+           {{this.profile.about }}
           </p>
         </BoxContainer>
         <BoxContainer class="mb-5" title="Áreas de pesquisa">
-          <div class="areas-container justify-start">
-            <div class="item">Realidade Virtual</div>
-            <div class="item">Internet das Coisas</div>
+          <div class="areas-container justify-start" v-for="(item, index) in this.profile.areas" :key="index">
+            <div class="item">{{item}}</div>
           </div>
         </BoxContainer>
         <BoxContainer class="mb-5" title="Projetos de pesquisa">
-          <div class="bordered pa-3 rounded">
-            <p>JAN/2020 - Atualmente</p>
-            <b>Nome do Projeto de Pesquisa</b>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
-            </p>
+          <div class="bordered pa-3 rounded" v-for="(item, index) in this.profile.projects" :key="index">
+            <p>{{ new Date(item.initial_date).toLocaleString('default', { month: 'long' }).toUpperCase()}}/{{ new Date(item.initial_date).getUTCFullYear()}} - Atualmente</p>
+            <b>{{item.title}}</b>
+          </div>
+        </BoxContainer>
+
+        <BoxContainer class="mb-5" title="Disciplinas">
+          <div class="bordered pa-3 rounded" v-for="(item, index) in this.profile.subjects" :key="index">
+             <p>{{ new Date(item.initial_date).toLocaleString('default', { month: 'long' }).toUpperCase()}}/{{ new Date(item.initial_date).getUTCFullYear()}} - Atualmente</p>
+            <b>{{item.title}}</b>
           </div>
         </BoxContainer>
       </v-col>
